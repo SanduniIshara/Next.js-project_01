@@ -1,6 +1,10 @@
 "use client"
 import Todo from "../components/Todo";
 import {useState} from "react";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import axios from "axios";
+  
 
 export default function Home() {
   
@@ -16,9 +20,23 @@ export default function Home() {
     console.log(formData);
   }
 
+  const onSubmitHandler= async(e)=>{
+    e.preventDefault();
+    try{
+
+     const response = await axios.post('/api', formData);
+     toast.success(response.data.msg);
+
+    }
+    catch(error){
+     toast.error('Error');
+    }
+  }
+
   return (
     <>
-      <form className="flex item-start flex-col gap-2 w-[70%] max-w-[600px] mt-24 mx-auto">
+      <ToastContainer theme="dark"/>
+      <form  onSubmit={onSubmitHandler} className="flex item-start flex-col gap-2 w-[70%] max-w-[600px] mt-24 mx-auto">
         <input value={formData.title} onChange={onChangeHandler}
           type="text"
           name="title"
